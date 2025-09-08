@@ -6,8 +6,8 @@
   <title>Bayar Pajak Lebih Mudah</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f3f4f6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e0e5ec;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -15,48 +15,57 @@
       margin: 0;
     }
     .container {
-      width: 350px;
-      background: white;
-      border-radius: 20px;
+      width: 370px;
+      background: #e0e5ec;
+      border-radius: 25px;
+      box-shadow: 9px 9px 16px #b8bcc2,
+                  -9px -9px 16px #ffffff;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
     }
     .header {
       background: #2563eb;
       color: white;
       text-align: center;
-      padding: 20px;
-      font-size: 18px;
+      padding: 18px;
+      font-size: 20px;
       font-weight: bold;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      box-shadow: inset 3px 3px 6px rgba(0,0,0,0.2),
+                  inset -3px -3px 6px rgba(255,255,255,0.6);
     }
     .amount {
       text-align: center;
-      padding: 15px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    .amount p {
-      margin: 5px 0;
+      margin-bottom: 15px;
     }
     .amount .price {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: bold;
       color: #111827;
     }
+    .amount p {
+      margin: 5px 0;
+      color: #555;
+    }
     .list {
-      border-top: 1px solid #e5e7eb;
+      margin: 10px 0;
     }
     .item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin: 8px 0;
       cursor: pointer;
-      transition: background 0.2s;
-      text-decoration: none;
-      color: inherit;
+      background: #e0e5ec;
+      box-shadow: 5px 5px 10px #b8bcc2,
+                  -5px -5px 10px #ffffff;
+      transition: all 0.2s ease-in-out;
     }
     .item:hover {
-      background: #f9fafb;
+      transform: translateY(-2px);
     }
     .item span {
       font-weight: 500;
@@ -68,54 +77,60 @@
     }
     /* Dropdown */
     .dropdown-content {
-      display: none;
+      max-height: 0;
+      overflow: hidden;
+      display: flex;
       flex-direction: column;
-      background: #fff;
-      border-top: 1px solid #e5e7eb;
+      border-radius: 12px;
+      transition: max-height 0.4s ease;
     }
     .dropdown-content a {
-      padding: 10px 16px;
+      padding: 12px 16px;
+      margin: 5px 0;
+      border-radius: 12px;
+      background: #e0e5ec;
       text-decoration: none;
       color: #111827;
       font-size: 14px;
+      box-shadow: 4px 4px 8px #b8bcc2,
+                  -4px -4px 8px #ffffff;
       display: flex;
       justify-content: space-between;
     }
     .dropdown-content a:hover {
-      background: #f9fafb;
+      transform: scale(1.03);
     }
     .dropdown.active .dropdown-content {
-      display: flex;
+      max-height: 300px;
     }
     .buttons {
-      padding: 16px;
+      margin-top: 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 15px;
+    }
+    .btn {
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
+      background: #e0e5ec;
+      box-shadow: 6px 6px 12px #b8bcc2,
+                  -6px -6px 12px #ffffff;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn:active {
+      box-shadow: inset 4px 4px 6px #b8bcc2,
+                  inset -4px -4px 6px #ffffff;
+      transform: translateY(2px);
     }
     .btn-primary {
-      background: #2563eb;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn-primary:hover {
-      background: #1d4ed8;
+      color: #2563eb;
     }
     .btn-secondary {
-      background: #f3f4f6;
       color: #111827;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    .btn-secondary:hover {
-      background: #e5e7eb;
     }
   </style>
 </head>
@@ -138,7 +153,7 @@
       <div class="dropdown">
         <div class="item" onclick="toggleDropdown()">
           <span>💳 E-Wallet</span>
-          <span>▼</span>
+          <span id="arrow">▼</span>
         </div>
         <div class="dropdown-content">
           <a href="https://www.ovo.id/" target="_blank"><span>OVO</span> ›</a>
@@ -162,16 +177,18 @@
     </div>
 
     <div class="buttons">
-      <button class="btn-primary">Ingatkan Saya Tahun Depan</button>
-      <button class="btn-secondary">Manfaat Pajak Saya</button>
+      <button class="btn btn-primary">Ingatkan Saya Tahun Depan</button>
+      <button class="btn btn-secondary">Manfaat Pajak Saya</button>
     </div>
   </div>
 
   <script>
     function toggleDropdown() {
-      document.querySelector('.dropdown').classList.toggle('active');
+      const dropdown = document.querySelector('.dropdown');
+      dropdown.classList.toggle('active');
+      const arrow = document.getElementById('arrow');
+      arrow.textContent = dropdown.classList.contains('active') ? '▲' : '▼';
     }
   </script>
 </body>
 </html>
-
