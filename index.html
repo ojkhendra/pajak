@@ -66,6 +66,27 @@
       color: #6b7280;
       font-size: 13px;
     }
+    /* Dropdown */
+    .dropdown-content {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      border-top: 1px solid #e5e7eb;
+    }
+    .dropdown-content a {
+      padding: 10px 16px;
+      text-decoration: none;
+      color: #111827;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .dropdown-content a:hover {
+      background: #f9fafb;
+    }
+    .dropdown.active .dropdown-content {
+      display: flex;
+    }
     .buttons {
       padding: 16px;
       display: flex;
@@ -112,26 +133,28 @@
         <span>🏦 Bank Transfer</span>
         <span>›</span>
       </div>
-      <!-- E-Wallet jadi link -->
-      <a href="https://www.ovo.id/" target="_blank" class="item">
-        <span>💳 E-Wallet</span>
-        <small>OVO</small>
-      </a>
-      <a href="https://www.dana.id/" target="_blank" class="item">
-        <span>💳 E-Wallet</span>
-        <small>DANA</small>
-      </a>
-      <a href="https://www.gojek.com/gopay/" target="_blank" class="item">
-        <span>💳 E-Wallet</span>
-        <small>GoPay</small>
-      </a>
-      <!-- Marketplace jadi link -->
+
+      <!-- Dropdown E-Wallet -->
+      <div class="dropdown">
+        <div class="item" onclick="toggleDropdown()">
+          <span>💳 E-Wallet</span>
+          <span>▼</span>
+        </div>
+        <div class="dropdown-content">
+          <a href="https://www.ovo.id/" target="_blank"><span>OVO</span> ›</a>
+          <a href="https://www.dana.id/" target="_blank"><span>DANA</span> ›</a>
+          <a href="https://www.gojek.com/gopay/" target="_blank"><span>GoPay</span> ›</a>
+        </div>
+      </div>
+
+      <!-- Marketplace -->
       <a href="https://www.tokopedia.com/pajak/samsat" target="_blank" class="item">
         <span>🛒 Marketplace</span>
         <small>Tokopedia, Bukalapak</small>
       </a>
-      <!-- Minimarket jadi link -->
-      <a href="https://www.google.com/maps/search/indomaret+terdekat+dari+lokasi+saya/@-7.8227126,112.0118669,15z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI1MDkwMy4wIKXMDSoASAFQAw%3D%3D" 
+
+      <!-- Minimarket -->
+      <a href="https://www.google.com/maps/search/indomaret+terdekat+dari+lokasi+saya/" 
          target="_blank" class="item">
         <span>🏪 Minimarket</span>
         <small>Indomaret Terdekat</small>
@@ -143,5 +166,12 @@
       <button class="btn-secondary">Manfaat Pajak Saya</button>
     </div>
   </div>
+
+  <script>
+    function toggleDropdown() {
+      document.querySelector('.dropdown').classList.toggle('active');
+    }
+  </script>
 </body>
 </html>
+
