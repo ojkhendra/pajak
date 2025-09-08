@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bayar Pajak Lebih Mudah</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -62,19 +64,40 @@
       background: #e0e5ec;
       box-shadow: 5px 5px 10px #b8bcc2,
                   -5px -5px 10px #ffffff;
-      transition: all 0.2s ease-in-out;
-    }
-    .item:hover {
-      transform: translateY(-2px);
+      transition: all 0.3s ease-in-out;
+      text-decoration: none;
+      color: inherit;
     }
     .item span {
       font-weight: 500;
       color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     .item small {
       color: #6b7280;
       font-size: 13px;
     }
+
+    /* Hover background sesuai kategori */
+    .info:hover { background: rgba(22,163,74,0.15); }
+    .bank:hover { background: rgba(37,99,235,0.15); }
+    .wallet:hover { background: rgba(147,51,234,0.15); }
+    .market:hover { background: rgba(249,115,22,0.15); }
+    .store:hover { background: rgba(220,38,38,0.15); }
+
+    /* Glow effect pada ikon */
+    .item:hover .icon-info { text-shadow: 0 0 10px #16a34a; }
+    .item:hover .icon-bank { text-shadow: 0 0 10px #2563eb; }
+    .item:hover .icon-wallet { text-shadow: 0 0 10px #9333ea; }
+    .item:hover .icon-market { text-shadow: 0 0 10px #f97316; }
+    .item:hover .icon-store { text-shadow: 0 0 10px #dc2626; }
+
+    .dropdown-content a:hover .icon-ovo { text-shadow: 0 0 10px #6366f1; }
+    .dropdown-content a:hover .icon-dana { text-shadow: 0 0 10px #2563eb; }
+    .dropdown-content a:hover .icon-gopay { text-shadow: 0 0 10px #16a34a; }
+
     /* Dropdown */
     .dropdown-content {
       max-height: 0;
@@ -96,13 +119,21 @@
                   -4px -4px 8px #ffffff;
       display: flex;
       justify-content: space-between;
+      transition: all 0.3s ease;
     }
-    .dropdown-content a:hover {
-      transform: scale(1.03);
+    .dropdown-content a span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .dropdown.active .dropdown-content {
-      max-height: 300px;
-    }
+    .dropdown-content a:hover { transform: scale(1.03); }
+    .dropdown-content a.ovo:hover { background: rgba(99,102,241,0.15); }
+    .dropdown-content a.dana:hover { background: rgba(37,99,235,0.15); }
+    .dropdown-content a.gopay:hover { background: rgba(22,163,74,0.15); }
+
+    .dropdown.active .dropdown-content { max-height: 300px; }
+
+    /* Buttons */
     .buttons {
       margin-top: 20px;
       display: flex;
@@ -126,12 +157,18 @@
                   inset -4px -4px 6px #ffffff;
       transform: translateY(2px);
     }
-    .btn-primary {
-      color: #2563eb;
-    }
-    .btn-secondary {
-      color: #111827;
-    }
+    .btn-primary { color: #2563eb; }
+    .btn-secondary { color: #111827; }
+
+    /* Icon warna */
+    .icon-info { color: #16a34a; }
+    .icon-bank { color: #2563eb; }
+    .icon-wallet { color: #9333ea; }
+    .icon-ovo { color: #6366f1; }
+    .icon-dana { color: #2563eb; }
+    .icon-gopay { color: #16a34a; }
+    .icon-market { color: #f97316; }
+    .icon-store { color: #dc2626; }
   </style>
 </head>
 <body>
@@ -144,34 +181,41 @@
     </div>
 
     <div class="list">
-      <div class="item">
-        <span>🏦 Bank Transfer</span>
+      <!-- Info PKB -->
+      <a href="https://bapenda.jatimprov.go.id/info/pkb" target="_blank" class="item info">
+        <span><i class="fas fa-info-circle icon-info"></i> Info PKB</span>
+        <span>›</span>
+      </a>
+
+      <!-- Bank Transfer -->
+      <div class="item bank">
+        <span><i class="fas fa-university icon-bank"></i> Bank Transfer</span>
         <span>›</span>
       </div>
 
       <!-- Dropdown E-Wallet -->
       <div class="dropdown">
-        <div class="item" onclick="toggleDropdown()">
-          <span>💳 E-Wallet</span>
+        <div class="item wallet" onclick="toggleDropdown()">
+          <span><i class="fas fa-wallet icon-wallet"></i> E-Wallet</span>
           <span id="arrow">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="https://www.ovo.id/" target="_blank"><span>OVO</span> ›</a>
-          <a href="https://www.dana.id/" target="_blank"><span>DANA</span> ›</a>
-          <a href="https://www.gojek.com/gopay/" target="_blank"><span>GoPay</span> ›</a>
+          <a href="https://www.ovo.id/" target="_blank" class="ovo"><span><i class="fas fa-circle icon-ovo"></i> OVO</span> ›</a>
+          <a href="https://www.dana.id/" target="_blank" class="dana"><span><i class="fas fa-circle icon-dana"></i> DANA</span> ›</a>
+          <a href="https://www.gojek.com/gopay/" target="_blank" class="gopay"><span><i class="fas fa-circle icon-gopay"></i> GoPay</span> ›</a>
         </div>
       </div>
 
       <!-- Marketplace -->
-      <a href="https://www.tokopedia.com/pajak/samsat" target="_blank" class="item">
-        <span>🛒 Marketplace</span>
+      <a href="https://www.tokopedia.com/pajak/samsat" target="_blank" class="item market">
+        <span><i class="fas fa-shopping-cart icon-market"></i> Marketplace</span>
         <small>Tokopedia, Bukalapak</small>
       </a>
 
       <!-- Minimarket -->
       <a href="https://www.google.com/maps/search/indomaret+terdekat+dari+lokasi+saya/" 
-         target="_blank" class="item">
-        <span>🏪 Minimarket</span>
+         target="_blank" class="item store">
+        <span><i class="fas fa-store icon-store"></i> Minimarket</span>
         <small>Indomaret Terdekat</small>
       </a>
     </div>
