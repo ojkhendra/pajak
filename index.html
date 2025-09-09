@@ -87,13 +87,6 @@
     .market:hover { background: rgba(249,115,22,0.15); }
     .store:hover { background: rgba(220,38,38,0.15); }
 
-    /* Glow effect pada ikon */
-    .item:hover .icon-info { text-shadow: 0 0 10px #16a34a; }
-    .item:hover .icon-bank { text-shadow: 0 0 10px #2563eb; }
-    .item:hover .icon-wallet { text-shadow: 0 0 10px #9333ea; }
-    .item:hover .icon-market { text-shadow: 0 0 10px #f97316; }
-    .item:hover .icon-store { text-shadow: 0 0 10px #dc2626; }
-
     /* Dropdown */
     .dropdown-content {
       max-height: 0;
@@ -155,16 +148,6 @@
     .btn-primary { color: #2563eb; }
     .btn-secondary { color: #111827; }
 
-    /* Icon warna */
-    .icon-info { color: #16a34a; }
-    .icon-bank { color: #2563eb; }
-    .icon-wallet { color: #9333ea; }
-    .icon-ovo { color: #6366f1; }
-    .icon-dana { color: #2563eb; }
-    .icon-gopay { color: #16a34a; }
-    .icon-market { color: #f97316; }
-    .icon-store { color: #dc2626; }
-
     /* Popup Modal */
     .modal {
       position: fixed;
@@ -186,8 +169,14 @@
       animation: fadeIn 0.3s ease-in-out;
     }
     .modal-content h3 {
-      margin-top: 0;
+      margin: 10px 0 5px;
       color: #111827;
+    }
+    .modal-icon img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+      border-radius: 12px;
     }
     .modal-buttons {
       margin-top: 20px;
@@ -205,9 +194,19 @@
     }
     .btn-cancel { background: #e5e7eb; color: #111827; }
     .btn-store { background: #2563eb; color: white; }
+
+    /* Animasi */
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .shake {
+      animation: shake 0.5s ease;
     }
   </style>
 </head>
@@ -223,49 +222,45 @@
     <div class="list">
       <!-- Info PKB -->
       <a href="https://bapenda.jatimprov.go.id/info/pkb" target="_blank" class="item info">
-        <span><i class="fas fa-info-circle icon-info"></i> Info PKB</span>
+        <span><i class="fas fa-info-circle"></i> Info PKB</span>
         <span>›</span>
       </a>
 
       <!-- Dropdown Bank Transfer -->
       <div class="dropdown">
         <div class="item bank" onclick="toggleBankDropdown()">
-          <span><i class="fas fa-university icon-bank"></i> Bank Transfer</span>
+          <span><i class="fas fa-university"></i> Bank Transfer</span>
           <span id="arrow-bank">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="#" onclick="openApp('mandiri'); return false;" class="mandiri">
-            <span><i class="fas fa-building-columns icon-bank"></i> Mandiri</span> ›
-          </a>
-          <a href="#" onclick="openApp('bca'); return false;" class="bca">
-            <span><i class="fas fa-building-columns icon-bank"></i> BCA</span> ›
-          </a>
+          <a href="#" onclick="openApp('mandiri'); return false;"> <span>Mandiri</span> ›</a>
+          <a href="#" onclick="openApp('bca'); return false;"> <span>BCA</span> ›</a>
         </div>
       </div>
 
       <!-- Dropdown E-Wallet -->
       <div class="dropdown">
         <div class="item wallet" onclick="toggleDropdown()">
-          <span><i class="fas fa-wallet icon-wallet"></i> E-Wallet</span>
+          <span><i class="fas fa-wallet"></i> E-Wallet</span>
           <span id="arrow">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="#" onclick="openApp('ovo'); return false;" class="ovo"><span><i class="fas fa-circle icon-ovo"></i> OVO</span> ›</a>
-          <a href="#" onclick="openApp('dana'); return false;" class="dana"><span><i class="fas fa-circle icon-dana"></i> DANA</span> ›</a>
-          <a href="#" onclick="openApp('gopay'); return false;" class="gopay"><span><i class="fas fa-circle icon-gopay"></i> GoPay</span> ›</a>
+          <a href="#" onclick="openApp('ovo'); return false;"><span>OVO</span> ›</a>
+          <a href="#" onclick="openApp('dana'); return false;"><span>DANA</span> ›</a>
+          <a href="#" onclick="openApp('gopay'); return false;"><span>GoPay</span> ›</a>
         </div>
       </div>
 
       <!-- Marketplace -->
       <a href="https://www.tokopedia.com/pajak/samsat" target="_blank" class="item market">
-        <span><i class="fas fa-shopping-cart icon-market"></i> Marketplace</span>
+        <span><i class="fas fa-shopping-cart"></i> Marketplace</span>
         <small>Tokopedia</small>
       </a>
 
       <!-- Minimarket -->
       <a href="https://www.google.com/maps/search/indomaret+terdekat+dari+lokasi+saya/" 
          target="_blank" class="item store">
-        <span><i class="fas fa-store icon-store"></i> Minimarket</span>
+        <span><i class="fas fa-store"></i> Minimarket</span>
         <small>Indomaret Terdekat</small>
       </a>
     </div>
@@ -278,9 +273,12 @@
 
   <!-- Popup Modal -->
   <div id="modal" class="modal">
-    <div class="modal-content">
-      <h3>Aplikasi tidak terdeteksi</h3>
-      <p>Ingin membuka App Store / Play Store?</p>
+    <div id="modalContent" class="modal-content">
+      <div id="modalIcon" class="modal-icon">
+        <img src="" alt="App Logo">
+      </div>
+      <h3 id="modalTitle">Aplikasi tidak terdeteksi</h3>
+      <p id="modalText">Ingin membuka App Store?</p>
       <div class="modal-buttons">
         <button class="btn-cancel" onclick="closeModal()">Batal</button>
         <button class="btn-store" id="storeBtn">Buka Store</button>
@@ -312,55 +310,78 @@
 
       let deepLink = "";
       let storeLink = "";
+      let intentLink = "";
+      let appName = "";
+      let appLogo = "";
 
       if (service === "mandiri") {
         deepLink = "mandirimobile://";
         storeLink = isIOS 
           ? "https://apps.apple.com/id/app/livin-by-mandiri/id1555414743"
-          : "https://play.google.com/store/apps/details?id=id.bmri.livin&hl=id";
+          : "https://play.google.com/store/apps/details?id=id.bmri.livin";
+        intentLink = "intent://#Intent;scheme=mandirimobile;package=id.bmri.livin;end";
+        appName = "Livin' by Mandiri";
+        appLogo = "https://seeklogo.com/images/B/bank-mandiri-logo-9E05F02D99-seeklogo.com.png";
       } else if (service === "bca") {
         deepLink = "bcamobile://";
         storeLink = isIOS
-          ? "https://apps.apple.com/id/app/bca-mobile/id551587254?l=id"
-          : "https://play.google.com/store/apps/details?id=com.bca&hl=id";
+          ? "https://apps.apple.com/id/app/bca-mobile/id551587254"
+          : "https://play.google.com/store/apps/details?id=com.bca";
+        intentLink = "intent://#Intent;scheme=bcamobile;package=com.bca;end";
+        appName = "BCA Mobile";
+        appLogo = "https://seeklogo.com/images/B/bca-bank-central-asia-logo-6376A7C7E5-seeklogo.com.png";
       } else if (service === "ovo") {
         deepLink = "ovo://";
         storeLink = isIOS
-          ? "https://apps.apple.com/id/app/ovo/id1142114207?l=id"
-          : "https://play.google.com/store/apps/details?id=ovo.id&hl=id";
+          ? "https://apps.apple.com/id/app/ovo/id1142114207"
+          : "https://play.google.com/store/apps/details?id=ovo.id";
+        intentLink = "intent://#Intent;scheme=ovo;package=ovo.id;end";
+        appName = "OVO";
+        appLogo = "https://seeklogo.com/images/O/ovo-logo-0F2268B9C9-seeklogo.com.png";
       } else if (service === "dana") {
         deepLink = "danaid://";
         storeLink = isIOS
-          ? "https://apps.apple.com/id/app/dana-dompet-digital-indonesia/id1437123008?l=id"
-          : "https://play.google.com/store/apps/details?id=id.dana&hl=id";
+          ? "https://apps.apple.com/id/app/dana-dompet-digital-indonesia/id1437123008"
+          : "https://play.google.com/store/apps/details?id=id.dana";
+        intentLink = "intent://#Intent;scheme=danaid;package=id.dana;end";
+        appName = "DANA";
+        appLogo = "https://seeklogo.com/images/D/dana-wallet-logo-6A1E1F1E0B-seeklogo.com.png";
       } else if (service === "gopay") {
         deepLink = "gopay://";
         storeLink = isIOS
-          ? "https://apps.apple.com/id/app/gopay-transfer-pulsa-tagihan/id6446321594?l=id"
-          : "https://play.google.com/store/search?q=gopay&c=apps&hl=id";
+          ? "https://apps.apple.com/id/app/gopay-transfer-pulsa-tagihan/id6446321594"
+          : "https://play.google.com/store/search?q=gopay&c=apps";
+        intentLink = "intent://#Intent;scheme=gopay;package=com.gojek.app;end";
+        appName = "GoPay";
+        appLogo = "https://seeklogo.com/images/G/gopay-logo-15BC0F0E2E-seeklogo.com.png";
       }
 
-      // Simpan store link sementara
-      pendingStoreLink = storeLink;
-      document.getElementById("storeBtn").onclick = () => {
-        window.location.href = pendingStoreLink;
-      };
+      if (isAndroid) {
+        window.location.href = intentLink;
+      } else if (isIOS) {
+        pendingStoreLink = storeLink;
+        document.getElementById("storeBtn").onclick = () => {
+          window.location.href = pendingStoreLink;
+        };
 
-      // coba buka aplikasi
-      window.location.href = deepLink;
+        window.location.href = deepLink;
 
-      // cek dalam 1.5 detik apakah aplikasi terbuka
-      setTimeout(() => {
-        if (!(document.hidden || document.webkitHidden)) {
-          // Aplikasi tidak terbuka → tampilkan modal
-          openModal();
-        }
-      }, 1500);
+        // Kalau gagal dalam 1.5 detik, tampilkan modal dengan logo + animasi shake
+        setTimeout(() => {
+          if (!(document.hidden || document.webkitHidden)) {
+            const modal = document.getElementById("modal");
+            const modalContent = document.getElementById("modalContent");
+            document.getElementById("modalTitle").textContent = appName + " tidak terdeteksi";
+            document.getElementById("modalText").textContent = "Ingin membuka App Store?";
+            document.getElementById("modalIcon").innerHTML = `<img src="${appLogo}" alt="${appName} Logo">`;
+            modal.style.display = "flex";
+            modalContent.classList.add("shake");
+            setTimeout(() => modalContent.classList.remove("shake"), 600);
+          }
+        }, 1500);
+      }
     }
 
-    function openModal() {
-      document.getElementById("modal").style.display = "flex";
-    }
     function closeModal() {
       document.getElementById("modal").style.display = "none";
     }
