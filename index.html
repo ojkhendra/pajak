@@ -116,8 +116,6 @@
       display: flex;
       justify-content: space-between;
       transition: all 0.3s ease;
-
-      /* Indent submenu */
       padding-left: 32px;
       border-left: 3px solid #d1d5db;
     }
@@ -166,6 +164,51 @@
     .icon-gopay { color: #16a34a; }
     .icon-market { color: #f97316; }
     .icon-store { color: #dc2626; }
+
+    /* Popup Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .modal-content h3 {
+      margin-top: 0;
+      color: #111827;
+    }
+    .modal-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .modal-buttons button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-cancel { background: #e5e7eb; color: #111827; }
+    .btn-store { background: #2563eb; color: white; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
 <body>
@@ -191,10 +234,10 @@
           <span id="arrow-bank">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="#" onclick="openApp('mandiri')" class="mandiri">
+          <a href="#" onclick="openApp('mandiri'); return false;" class="mandiri">
             <span><i class="fas fa-building-columns icon-bank"></i> Mandiri</span> ›
           </a>
-          <a href="#" onclick="openApp('bca')" class="bca">
+          <a href="#" onclick="openApp('bca'); return false;" class="bca">
             <span><i class="fas fa-building-columns icon-bank"></i> BCA</span> ›
           </a>
         </div>
@@ -207,9 +250,9 @@
           <span id="arrow">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="#" onclick="openApp('ovo')" class="ovo"><span><i class="fas fa-circle icon-ovo"></i> OVO</span> ›</a>
-          <a href="#" onclick="openApp('dana')" class="dana"><span><i class="fas fa-circle icon-dana"></i> DANA</span> ›</a>
-          <a href="#" onclick="openApp('gopay')" class="gopay"><span><i class="fas fa-circle icon-gopay"></i> GoPay</span> ›</a>
+          <a href="#" onclick="openApp('ovo'); return false;" class="ovo"><span><i class="fas fa-circle icon-ovo"></i> OVO</span> ›</a>
+          <a href="#" onclick="openApp('dana'); return false;" class="dana"><span><i class="fas fa-circle icon-dana"></i> DANA</span> ›</a>
+          <a href="#" onclick="openApp('gopay'); return false;" class="gopay"><span><i class="fas fa-circle icon-gopay"></i> GoPay</span> ›</a>
         </div>
       </div>
 
@@ -233,20 +276,34 @@
     </div>
   </div>
 
+  <!-- Popup Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3>Aplikasi tidak terdeteksi</h3>
+      <p>Ingin membuka App Store / Play Store?</p>
+      <div class="modal-buttons">
+        <button class="btn-cancel" onclick="closeModal()">Batal</button>
+        <button class="btn-store" id="storeBtn">Buka Store</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     function toggleDropdown() {
-      const dropdown = document.querySelectorAll('.dropdown')[1]; // dropdown E-Wallet
+      const dropdown = document.querySelectorAll('.dropdown')[1];
       dropdown.classList.toggle('active');
       const arrow = document.getElementById('arrow');
       arrow.textContent = dropdown.classList.contains('active') ? '▲' : '▼';
     }
 
     function toggleBankDropdown() {
-      const dropdown = document.querySelectorAll('.dropdown')[0]; // dropdown Bank
+      const dropdown = document.querySelectorAll('.dropdown')[0];
       dropdown.classList.toggle('active');
       const arrow = document.getElementById('arrow-bank');
       arrow.textContent = dropdown.classList.contains('active') ? '▲' : '▼';
     }
+
+    let pendingStoreLink = "";
 
     function openApp(service) {
       const ua = navigator.userAgent.toLowerCase();
@@ -277,23 +334,36 @@
           ? "https://apps.apple.com/id/app/dana-dompet-digital-indonesia/id1437123008?l=id"
           : "https://play.google.com/store/apps/details?id=id.dana&hl=id";
       } else if (service === "gopay") {
-        deepLink = "gopay://"; // atau "gojek://"
+        deepLink = "gopay://";
         storeLink = isIOS
           ? "https://apps.apple.com/id/app/gopay-transfer-pulsa-tagihan/id6446321594?l=id"
           : "https://play.google.com/store/search?q=gopay&c=apps&hl=id";
       }
 
+      // Simpan store link sementara
+      pendingStoreLink = storeLink;
+      document.getElementById("storeBtn").onclick = () => {
+        window.location.href = pendingStoreLink;
+      };
+
       // coba buka aplikasi
       window.location.href = deepLink;
 
-      // fallback setelah 1 detik
+      // cek dalam 1.5 detik apakah aplikasi terbuka
       setTimeout(() => {
-        window.location.href = storeLink;
-      }, 1000);
+        if (!(document.hidden || document.webkitHidden)) {
+          // Aplikasi tidak terbuka → tampilkan modal
+          openModal();
+        }
+      }, 1500);
+    }
+
+    function openModal() {
+      document.getElementById("modal").style.display = "flex";
+    }
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
     }
   </script>
 </body>
 </html>
-
-
-
