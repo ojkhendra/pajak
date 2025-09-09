@@ -94,10 +94,6 @@
     .item:hover .icon-market { text-shadow: 0 0 10px #f97316; }
     .item:hover .icon-store { text-shadow: 0 0 10px #dc2626; }
 
-    .dropdown-content a:hover .icon-ovo { text-shadow: 0 0 10px #6366f1; }
-    .dropdown-content a:hover .icon-dana { text-shadow: 0 0 10px #2563eb; }
-    .dropdown-content a:hover .icon-gopay { text-shadow: 0 0 10px #16a34a; }
-
     /* Dropdown */
     .dropdown-content {
       max-height: 0;
@@ -120,6 +116,10 @@
       display: flex;
       justify-content: space-between;
       transition: all 0.3s ease;
+
+      /* Indent submenu */
+      padding-left: 32px;
+      border-left: 3px solid #d1d5db;
     }
     .dropdown-content a span {
       display: flex;
@@ -127,9 +127,6 @@
       gap: 8px;
     }
     .dropdown-content a:hover { transform: scale(1.03); }
-    .dropdown-content a.ovo:hover { background: rgba(99,102,241,0.15); }
-    .dropdown-content a.dana:hover { background: rgba(37,99,235,0.15); }
-    .dropdown-content a.gopay:hover { background: rgba(22,163,74,0.15); }
 
     .dropdown.active .dropdown-content { max-height: 300px; }
 
@@ -187,10 +184,20 @@
         <span>›</span>
       </a>
 
-      <!-- Bank Transfer -->
-      <div class="item bank">
-        <span><i class="fas fa-university icon-bank"></i> Bank Transfer</span>
-        <span>›</span>
+      <!-- Dropdown Bank Transfer -->
+      <div class="dropdown">
+        <div class="item bank" onclick="toggleBankDropdown()">
+          <span><i class="fas fa-university icon-bank"></i> Bank Transfer</span>
+          <span id="arrow-bank">▼</span>
+        </div>
+        <div class="dropdown-content">
+          <a href="#" onclick="openApp('mandiri')" class="mandiri">
+            <span><i class="fas fa-building-columns icon-bank"></i> Mandiri</span> ›
+          </a>
+          <a href="#" onclick="openApp('bca')" class="bca">
+            <span><i class="fas fa-building-columns icon-bank"></i> BCA</span> ›
+          </a>
+        </div>
       </div>
 
       <!-- Dropdown E-Wallet -->
@@ -200,9 +207,9 @@
           <span id="arrow">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="https://www.ovo.id/" target="_blank" class="ovo"><span><i class="fas fa-circle icon-ovo"></i> OVO</span> ›</a>
-          <a href="https://www.dana.id/" target="_blank" class="dana"><span><i class="fas fa-circle icon-dana"></i> DANA</span> ›</a>
-          <a href="https://www.gojek.com/gopay/" target="_blank" class="gopay"><span><i class="fas fa-circle icon-gopay"></i> GoPay</span> ›</a>
+          <a href="#" onclick="openApp('ovo')" class="ovo"><span><i class="fas fa-circle icon-ovo"></i> OVO</span> ›</a>
+          <a href="#" onclick="openApp('dana')" class="dana"><span><i class="fas fa-circle icon-dana"></i> DANA</span> ›</a>
+          <a href="#" onclick="openApp('gopay')" class="gopay"><span><i class="fas fa-circle icon-gopay"></i> GoPay</span> ›</a>
         </div>
       </div>
 
@@ -228,12 +235,62 @@
 
   <script>
     function toggleDropdown() {
-      const dropdown = document.querySelector('.dropdown');
+      const dropdown = document.querySelectorAll('.dropdown')[1]; // dropdown E-Wallet
       dropdown.classList.toggle('active');
       const arrow = document.getElementById('arrow');
       arrow.textContent = dropdown.classList.contains('active') ? '▲' : '▼';
     }
+
+    function toggleBankDropdown() {
+      const dropdown = document.querySelectorAll('.dropdown')[0]; // dropdown Bank
+      dropdown.classList.toggle('active');
+      const arrow = document.getElementById('arrow-bank');
+      arrow.textContent = dropdown.classList.contains('active') ? '▲' : '▼';
+    }
+
+    function openApp(service) {
+      const ua = navigator.userAgent.toLowerCase();
+      const isIOS = /iphone|ipad|ipod/.test(ua);
+      const isAndroid = /android/.test(ua);
+
+      let deepLink = "";
+      let storeLink = "";
+
+      if (service === "mandiri") {
+        deepLink = "mandirimobile://";
+        storeLink = isIOS 
+          ? "https://apps.apple.com/id/app/mandiri-online/id1145043720"
+          : "https://play.google.com/store/apps/details?id=id.co.bankmandiri.mandirionline";
+      } else if (service === "bca") {
+        deepLink = "bcamobile://";
+        storeLink = isIOS
+          ? "https://apps.apple.com/id/app/bca-mobile/id551385483"
+          : "https://play.google.com/store/apps/details?id=com.bca";
+      } else if (service === "ovo") {
+        deepLink = "ovo://";
+        storeLink = isIOS
+          ? "https://apps.apple.com/id/app/ovo/id1193651288"
+          : "https://play.google.com/store/apps/details?id=ovo.id";
+      } else if (service === "dana") {
+        deepLink = "danaid://";
+        storeLink = isIOS
+          ? "https://apps.apple.com/id/app/dana-dompet-digital-indonesia/id1437348930"
+          : "https://play.google.com/store/apps/details?id=id.dana";
+      } else if (service === "gopay") {
+        deepLink = "gopay://"; // atau "gojek://"
+        storeLink = isIOS
+          ? "https://apps.apple.com/id/app/gojek/id944875099"
+          : "https://play.google.com/store/apps/details?id=com.gojek.app";
+      }
+
+      // coba buka aplikasi
+      window.location.href = deepLink;
+
+      // fallback setelah 1 detik
+      setTimeout(() => {
+        window.location.href = storeLink;
+      }, 1000);
+    }
   </script>
 </body>
 </html>
-
