@@ -6,274 +6,536 @@
   <title>Bayar Pajak Lebih Mudah</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #f72585;
+      --success: #4cc9f0;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --border-radius: 16px;
+      --box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #e0e5ec;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      width: 370px;
-      background: #e0e5ec;
-      border-radius: 25px;
-      box-shadow: 9px 9px 16px #b8bcc2,
-                  -9px -9px 16px #ffffff;
-      overflow: hidden;
+      min-height: 100vh;
       padding: 20px;
     }
+    
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      padding: 0;
+      transform: translateY(0);
+      transition: var(--transition);
+    }
+    
+    .container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
     .header {
-      background: #2563eb;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       color: white;
       text-align: center;
-      padding: 18px;
-      font-size: 20px;
-      font-weight: bold;
-      border-radius: 15px;
-      margin-bottom: 15px;
-      box-shadow: inset 3px 3px 6px rgba(0,0,0,0.2),
-                  inset -3px -3px 6px rgba(255,255,255,0.6);
+      padding: 25px;
+      font-size: 22px;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .header::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transform: rotate(30deg);
+    }
+    
+    .header i {
+      margin-right: 10px;
+    }
+    
     .amount {
       text-align: center;
-      margin-bottom: 15px;
+      padding: 20px;
+      background: var(--light);
+      margin: 15px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.05);
     }
+    
     .amount .price {
-      font-size: 28px;
-      font-weight: bold;
-      color: #111827;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
     }
+    
     .amount p {
       margin: 5px 0;
-      color: #555;
+      color: var(--gray);
     }
+    
+    .due-date {
+      display: inline-block;
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    
     .list {
-      margin: 10px 0;
+      margin: 10px 15px;
     }
+    
     .item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 16px;
-      border-radius: 12px;
-      margin: 8px 0;
+      padding: 18px 20px;
+      border-radius: var(--border-radius);
+      margin: 12px 0;
       cursor: pointer;
-      background: #e0e5ec;
-      box-shadow: 5px 5px 10px #b8bcc2,
-                  -5px -5px 10px #ffffff;
-      transition: all 0.3s ease-in-out;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: var(--transition);
       text-decoration: none;
       color: inherit;
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      transition: var(--transition);
+    }
+    
+    .item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+    
     .item span {
       font-weight: 500;
-      color: #111827;
+      color: var(--dark);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      z-index: 1;
     }
+    
     .item small {
-      color: #6b7280;
+      color: var(--gray);
       font-size: 13px;
+      z-index: 1;
     }
-
-    /* Hover background sesuai kategori */
-    .info:hover { background: rgba(22,163,74,0.15); }
-    .bank:hover { background: rgba(37,99,235,0.15); }
-    .wallet:hover { background: rgba(147,51,234,0.15); }
-    .market:hover { background: rgba(249,115,22,0.15); }
-    .store:hover { background: rgba(220,38,38,0.15); }
-
+    
+    .item i {
+      width: 20px;
+      text-align: center;
+    }
+    
+    .item .arrow {
+      transition: var(--transition);
+    }
+    
+    .item:hover .arrow {
+      transform: translateX(3px);
+    }
+    
+    /* Warna khusus untuk setiap kategori */
+    .info { border-left: 5px solid #10b981; }
+    .info:hover { background: rgba(16, 185, 129, 0.05); }
+    
+    .bank { border-left: 5px solid #4361ee; }
+    .bank:hover { background: rgba(67, 97, 238, 0.05); }
+    
+    .wallet { border-left: 5px solid #f72585; }
+    .wallet:hover { background: rgba(247, 37, 133, 0.05); }
+    
+    .market { border-left: 5px solid #f59e0b; }
+    .market:hover { background: rgba(245, 158, 11, 0.05); }
+    
+    .store { border-left: 5px solid #ef4444; }
+    .store:hover { background: rgba(239, 68, 68, 0.05); }
+    
     /* Dropdown */
     .dropdown-content {
       max-height: 0;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      border-radius: 12px;
+      border-radius: var(--border-radius);
       transition: max-height 0.4s ease;
-    }
-    .dropdown-content a {
-      padding: 12px 16px;
       margin: 5px 0;
-      border-radius: 12px;
-      background: #e0e5ec;
+    }
+    
+    .dropdown-content a {
+      padding: 15px 20px;
+      margin: 5px 0;
+      border-radius: var(--border-radius);
+      background: var(--light);
       text-decoration: none;
-      color: #111827;
+      color: var(--dark);
       font-size: 14px;
-      box-shadow: 4px 4px 8px #b8bcc2,
-                  -4px -4px 8px #ffffff;
       display: flex;
       justify-content: space-between;
-      transition: all 0.3s ease;
-      padding-left: 32px;
+      align-items: center;
+      transition: var(--transition);
       border-left: 3px solid #d1d5db;
     }
+    
     .dropdown-content a span {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
-    .dropdown-content a:hover { transform: scale(1.03); }
-
-    .dropdown.active .dropdown-content { max-height: 300px; }
-
+    
+    .dropdown-content a:hover {
+      transform: translateX(5px);
+      background: white;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.08);
+    }
+    
+    .dropdown.active .dropdown-content {
+      max-height: 300px;
+    }
+    
     /* Buttons */
     .buttons {
-      margin-top: 20px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 15px;
+      background: var(--light);
+      margin: 15px;
+      border-radius: var(--border-radius);
     }
+    
     .btn {
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 15px;
+      padding: 16px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      font-size: 16px;
       cursor: pointer;
       border: none;
-      background: #e0e5ec;
-      box-shadow: 6px 6px 12px #b8bcc2,
-                  -6px -6px 12px #ffffff;
-      transition: all 0.2s ease-in-out;
+      transition: var(--transition);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
-    .btn:active {
-      box-shadow: inset 4px 4px 6px #b8bcc2,
-                  inset -4px -4px 6px #ffffff;
-      transform: translateY(2px);
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
     }
-    .btn-primary { color: #2563eb; }
-    .btn-secondary { color: #111827; }
-
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+    }
+    
+    .btn-secondary {
+      background: white;
+      color: var(--dark);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      color: var(--primary);
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+      padding: 0 20px 20px;
+    }
+    
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: var(--gray);
+      font-size: 14px;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      width: 65%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 10px;
+      transition: width 1s ease;
+    }
+    
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--gray);
+      font-size: 14px;
+      border-top: 1px solid #e9ecef;
+    }
+    
     /* Popup Modal */
     .modal {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: rgba(0,0,0,0.5);
       display: none;
       justify-content: center;
       align-items: center;
       z-index: 1000;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 15px;
-      max-width: 300px;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       animation: fadeIn 0.3s ease-in-out;
     }
+    
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: var(--border-radius);
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      animation: slideUp 0.4s ease-in-out;
+      position: relative;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--gray);
+    }
+    
     .modal-content h3 {
       margin: 10px 0 5px;
-      color: #111827;
+      color: var(--dark);
     }
+    
+    .modal-icon {
+      margin-bottom: 15px;
+    }
+    
     .modal-icon img {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 10px;
-      border-radius: 12px;
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
+    
     .modal-buttons {
       margin-top: 20px;
       display: flex;
       justify-content: space-between;
       gap: 10px;
     }
+    
     .modal-buttons button {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--border-radius);
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 600;
+      transition: var(--transition);
     }
-    .btn-cancel { background: #e5e7eb; color: #111827; }
-    .btn-store { background: #2563eb; color: white; }
-
+    
+    .btn-cancel {
+      background: #e9ecef;
+      color: var(--dark);
+    }
+    
+    .btn-cancel:hover {
+      background: #dee2e6;
+    }
+    
+    .btn-store {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-store:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+    }
+    
     /* Animasi */
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-8px); }
       40%, 80% { transform: translateX(8px); }
     }
+    
     .shake {
       animation: shake 0.5s ease;
+    }
+    
+    /* Responsivitas */
+    @media (max-width: 480px) {
+      .container {
+        margin: 10px;
+      }
+      
+      .header {
+        padding: 20px;
+        font-size: 20px;
+      }
+      
+      .amount .price {
+        font-size: 28px;
+      }
+      
+      .item {
+        padding: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">Bayar Pajak Lebih Mudah</div>
+    <div class="header">
+      <i class="fas fa-receipt"></i>Bayar Pajak Lebih Mudah
+    </div>
 
     <div class="amount">
       <p class="price">Rp 1.250.000</p>
-      <p>Jatuh Tempo: 30 Sept 2025</p>
+      <p>Total Pembayaran</p>
+      <div class="due-date">
+        <i class="fas fa-calendar-alt"></i> Jatuh Tempo: 30 Sept 2025
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-info">
+        <span>Status Pembayaran</span>
+        <span>65%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
     </div>
 
     <div class="list">
       <!-- Info PKB -->
       <a href="https://bapenda.jatimprov.go.id/info/pkb" target="_blank" class="item info">
-        <span><i class="fas fa-info-circle"></i> Info PKB</span>
-        <span>›</span>
+        <span><i class="fas fa-info-circle" style="color: #10b981;"></i> Info PKB</span>
+        <span class="arrow">›</span>
       </a>
 
       <!-- Dropdown Bank Transfer -->
       <div class="dropdown">
         <div class="item bank" onclick="toggleBankDropdown()">
-          <span><i class="fas fa-university"></i> Bank Transfer</span>
+          <span><i class="fas fa-university" style="color: #4361ee;"></i> Bank Transfer</span>
           <span id="arrow-bank">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="#" onclick="openApp('mandiri'); return false;"> <span>Mandiri</span> ›</a>
-          <a href="#" onclick="openApp('bca'); return false;"> <span>BCA</span> ›</a>
+          <a href="#" onclick="openApp('mandiri'); return false;"> <span><i class="fas fa-landmark" style="color: #4361ee;"></i> Mandiri</span> ›</a>
+          <a href="#" onclick="openApp('bca'); return false;"> <span><i class="fas fa-building" style="color: #4361ee;"></i> BCA</span> ›</a>
         </div>
       </div>
 
       <!-- Dropdown E-Wallet -->
       <div class="dropdown">
         <div class="item wallet" onclick="toggleDropdown()">
-          <span><i class="fas fa-wallet"></i> E-Wallet</span>
+          <span><i class="fas fa-wallet" style="color: #f72585;"></i> E-Wallet</span>
           <span id="arrow">▼</span>
         </div>
         <div class="dropdown-content">
-          <a href="#" onclick="openApp('ovo'); return false;"><span>OVO</span> ›</a>
-          <a href="#" onclick="openApp('dana'); return false;"><span>DANA</span> ›</a>
-          <a href="#" onclick="openApp('gopay'); return false;"><span>GoPay</span> ›</a>
+          <a href="#" onclick="openApp('ovo'); return false;"><span><i class="fas fa-bolt" style="color: #673ab7;"></i> OVO</span> ›</a>
+          <a href="#" onclick="openApp('dana'); return false;"><span><i class="fas fa-comment" style="color: #f72585;"></i> DANA</span> ›</a>
+          <a href="#" onclick="openApp('gopay'); return false;"><span><i class="fas fa-money-bill-wave" style="color: #00aa13;"></i> GoPay</span> ›</a>
         </div>
       </div>
 
       <!-- Marketplace -->
       <a href="https://www.tokopedia.com/pajak/samsat" target="_blank" class="item market">
-        <span><i class="fas fa-shopping-cart"></i> Marketplace</span>
+        <span><i class="fas fa-shopping-cart" style="color: #f59e0b;"></i> Marketplace</span>
         <small>Tokopedia</small>
       </a>
 
       <!-- Minimarket -->
       <a href="https://www.google.com/maps/search/indomaret+terdekat+dari+lokasi+saya/" 
          target="_blank" class="item store">
-        <span><i class="fas fa-store"></i> Minimarket</span>
+        <span><i class="fas fa-store" style="color: #ef4444;"></i> Minimarket</span>
         <small>Indomaret Terdekat</small>
       </a>
     </div>
 
     <div class="buttons">
-      <button class="btn btn-primary">Ingatkan Saya Tahun Depan</button>
-      <button class="btn btn-secondary">Manfaat Pajak Saya</button>
+      <button class="btn btn-primary"><i class="fas fa-bell"></i> Ingatkan Saya Tahun Depan</button>
+      <button class="btn btn-secondary"><i class="fas fa-chart-pie"></i> Manfaat Pajak Saya</button>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 ojkhendra</p>
     </div>
   </div>
 
   <!-- Popup Modal -->
   <div id="modal" class="modal">
     <div id="modalContent" class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
       <div id="modalIcon" class="modal-icon">
         <img src="" alt="App Logo">
       </div>
@@ -385,6 +647,14 @@
     function closeModal() {
       document.getElementById("modal").style.display = "none";
     }
+
+    // Animasi progress bar
+    document.addEventListener('DOMContentLoaded', function() {
+      const progressFill = document.querySelector('.progress-fill');
+      setTimeout(() => {
+        progressFill.style.width = '65%';
+      }, 500);
+    });
   </script>
 </body>
 </html>
